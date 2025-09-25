@@ -13,6 +13,7 @@ namespace ItalyShopAPI.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<Logs> Log { get; set; }
+        public DbSet<Size> Size { get; set; }
 
         public ItalyShopDbContext(DbContextOptions<ItalyShopDbContext> options) : base(options) { }
 
@@ -27,6 +28,7 @@ namespace ItalyShopAPI.Data
             modelBuilder.Entity<Order>().HasKey(o => o.idOrder);
             modelBuilder.Entity<OrderItem>().HasKey(oi => oi.idItems);
             modelBuilder.Entity<Logs>().HasKey(l => l.idLog);
+            modelBuilder.Entity<Size>().HasKey(s => s.idSize);
 
             // Relations
             modelBuilder.Entity<Employee>()
@@ -58,6 +60,11 @@ namespace ItalyShopAPI.Data
                 .HasOne(l => l.employee)
                 .WithMany(e => e.logs)
                 .HasForeignKey(l => l.idEmpFk);
+
+            modelBuilder.Entity<Size>()
+                .HasOne(s => s.good)
+                .WithMany(g => g.sizes)
+                .HasForeignKey(s => s.goodFk);
         }
     }
 }

@@ -19,15 +19,16 @@ namespace ItalyShopAPI.Services
         {
             var goods = await _dbContext.Goods
             .Include(g => g.category)
+            .Include(g => g.sizes)
             .Select(g => new GoodDTO
             {
                 Article = g.article,
                 Name = g.gName,
                 Model = g.model,
                 Price = g.price,
-                IsNew = g.isNew,
                 Image = g.image,
-                CategoryName = g.category != null ? g.category.title : null
+                CategoryName = g.category != null ? g.category.title : null,
+                Sizes = g.sizes
             }).ToListAsync();
             foreach(var good in goods)
             {
@@ -47,9 +48,9 @@ namespace ItalyShopAPI.Services
                 Name = g.gName,
                 Model = g.model,
                 Price = g.price,
-                IsNew = g.isNew,
                 Image = g.image,
-                CategoryName = g.category.title
+                CategoryName = g.category.title,
+                Sizes = g.sizes
             }).FirstOrDefaultAsync();
 
             Console.WriteLine(goodById);
@@ -63,15 +64,32 @@ namespace ItalyShopAPI.Services
 
         async public Task AddGoodAsync(CreateGoodDTO good, int empId)
         {
-            await _dbContext.Goods.AddAsync(new Good()
+            var newGood = await _dbContext.Goods.AddAsync(new Good()
             {
                 gName = good.GName,
                 model = good.Model,
                 price = good.Price,
-                isNew = good.IsNew,
+                addDate = DateTime.UtcNow,
                 image = good.Image,
-                categoryFk = good.CategoryFk
+                categoryFk = good.CategoryFk,
+                description = good.Description,
+                charasteristic = good.Charasteristics
             });
+
+            await _dbContext.SaveChangesAsync();
+
+
+
+            foreach (var size in good.sizes)
+            {
+                await _dbContext.Size.AddAsync(new Size()
+                {
+                    name = size.Name,
+                    quantity = size.quantity,
+                    goodFk = newGood.Entity.article
+                });
+            }
+            await _dbContext.SaveChangesAsync();
             //не понимаю в чем суть, надо будет посмотреть на данные которые будет передавать Денчик.
         }
 

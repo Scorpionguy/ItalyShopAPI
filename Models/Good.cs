@@ -13,20 +13,19 @@ namespace ItalyShopAPI.Models
         [Column("category_fk")]
         public int categoryFk { get; set; }
         public string? model { get; set; }
-
-        [Column("g_quantity")]
-        public int gQuantity { get; set; }
         public double price { get; set; }
         public int? sale { get; set; }
 
         [Column("add_date")]
         public DateTime? addDate { get; set; }
         public string? image { get; set; }
+        public string description { get; set; }
 
-        [Column("is_new")]
-        public bool isNew { get; set; }
-
+        [Column("characteristics")]
+        public string charasteristic { get; set; }
         public Category category { get; set; } = null!;
         public ICollection<OrderItem> orderItems { get; set; } = new List<OrderItem>();
+        public ICollection<Size> sizes { get; set; } = new List<Size>();
+
     }
 }

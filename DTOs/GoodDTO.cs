@@ -16,5 +16,6 @@ namespace ItalyShopAPI.DTOs
         public bool IsNew { get; set; }
 
         public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
+        public ICollection<Size> Sizes { get; set; } = new List<Size>();
     }
 }

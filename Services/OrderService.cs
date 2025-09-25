@@ -23,7 +23,7 @@ namespace ItalyShopAPI.Services
                     Name = i.good.gName,
                     CategoryName = i.good.category.title,
                     Model = i.good.model,
-                    Quantity = i.good.gQuantity,
+                    //Quantity = i.good.gQuantity,
                     Price = i.good.price,
                     Image = i.good.image
                 }).ToList(),
@@ -47,7 +47,7 @@ namespace ItalyShopAPI.Services
                     Name = i.good.gName,
                     CategoryName = i.good.category.title,
                     Model = i.good.model,
-                    Quantity = i.good.gQuantity,
+                    //Quantity = i.good.gQuantity,
                     Price = i.good.price,
                     Image = i.good.image
                 }).ToList(),
@@ -70,7 +70,7 @@ namespace ItalyShopAPI.Services
                     Name = i.good.gName,
                     CategoryName = i.good.category.title,
                     Model = i.good.model,
-                    Quantity = i.good.gQuantity,
+                    //Quantity = i.good.gQuantity,
                     Price = i.good.price,
                     Image = i.good.image
                 }).ToList(),

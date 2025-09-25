@@ -29,7 +29,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        // важно указать endpoint
+        // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ endpoint
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "ItalyShop API v1");
     });
     app.MapOpenApi();
