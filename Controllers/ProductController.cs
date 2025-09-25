@@ -24,25 +24,6 @@ namespace ItalyShopAPI.Controllers
             _logService = logService;
         }
 
-
-        //[HttpGet(Name = "GetProduct")]
-        //public ActionResult<Product> Get()
-        //{
-        //    Console.WriteLine("Дошло до гета");
-
-        //    var products = Enumerable.Range(1, 3).Select(index => new Product
-        //    {
-        //        id = index,
-        //        category = categories[Random.Shared.Next(categories.Length)],
-        //        name = names[Random.Shared.Next(names.Length)],
-        //        price = Random.Shared.Next(1, 10000)
-        //    })
-        //    .ToArray();
-        //    return Ok(products);
-
-        //}
-
-
         // путь к эому методу: api/product/catalog
         //ВОЗМОЖНО ПРОДУКТ С БОЛЬШОЙ БУКВЫ !!!!!!!!!!!
         [HttpGet("catalog")]
@@ -50,9 +31,17 @@ namespace ItalyShopAPI.Controllers
         {
             Console.WriteLine("Дошло до catalog");
             
-            var goods = await _goodsService.GetAllAsync();
-            return Ok(goods);
+            try
+            {
 
+                var goods = await _goodsService.GetAllAsync();
+                return Ok(goods);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Ошибка при показе данных " + ex);
+                return BadRequest(ex.Message);
+            }
         }
 
 
@@ -61,28 +50,37 @@ namespace ItalyShopAPI.Controllers
         [HttpGet("{article}")]
         public async Task<ActionResult<IEnumerable<GoodDTO>>> GetOne(int article)
         {
-            _logger.LogInformation($"Дошло до product/id, {article}");
-            
-            var goods = await _goodsService.GetGoodByIdAsync(article);
-            return Ok(goods);
+            try
+            {
 
+                _logger.LogInformation($"Дошло до product/id, {article}");
+
+                var goods = await _goodsService.GetGoodByIdAsync(article);
+                return Ok(goods);
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Ошибка при просмотре товара" + ex);
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost("add")]
         public async Task<ActionResult<IEnumerable<GoodDTO>>> AddGood([FromBody]CreateGoodDTO newGood)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return BadRequest("Model is not valid");
             try
             {
                 await _goodsService.AddGoodAsync(newGood, 1);
                 await _logService.AddLog($"Успешно добавлен {newGood.Model}, {newGood.GName}", "Добавление", 1 /*айди сотрудника, позже сделать почеловечески*/);
-                return Ok();
+                return Ok("Товар успешно добавлен!");
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Ошибка при добавлении данных " + ex);
-                return BadRequest(ModelState);
+                return BadRequest(ex.Message);
             }
 
             

@@ -48,6 +48,7 @@ namespace ItalyShopAPI.Services
             {
                 title = categoryDTO.Title,
             });
+
         } 
     }
 }
